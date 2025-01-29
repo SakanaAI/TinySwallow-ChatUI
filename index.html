@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <title>TinySwallow-1.5B Chat</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="./index.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" sizes="32x32" href="./assets/logo.png">
+
+  </head>
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <body>
+    
+    <div class="wrapper">
+      <header>
+        <div class="header-content">
+          <h1><a href="#" id="title-link">TinySwallow ChatUI</a></h1>
+          <p class="model-description">
+            📚 <a href="https://arxiv.org/abs/2501.16937" target="_blank">Paper</a> | 
+            🤗 <a href="https://huggingface.co/collections/SakanaAI/tinyswallow-676cf5e57fff9075b5ddb7ec" target="_blank">Hugging Face</a> | 
+            📝 <a href="https://sakana.ai/taid-jp" target="_blank">Blog</a><br>
+            このChatUIでは、小規模日本語言語モデル<a href="https://huggingface.co/SakanaAI/TinySwallow-1.5B-Instruct-q4f32_1-MLC" target="_blank">TinySwallow-1.5B</a>と会話することができます。
+            <br>
+            このデモはTinySwallow-1.5Bをブラウザ上で動作させており、外部APIなどを介しておらず、最初のモデルのダウンロードが完了すれば完全オフラインで会話することも可能です。
+            <br>
+            PCでの利用を想定しており、iPhone上でのチャットは<a href="https://github.com/SakanaAI/TinySwallow-ChatUI/blob/main/docs/iphone.md" target="_blank">こちら</a>をお試しください。
+          </p>
+        </div>
+        
+        <a href="https://sakana.ai" target="_blank">
+          <img src="./assets/long_logo.png" alt="Sakana AI Logo" class="logo" />
+        </a>
+      </header>
+      <main>
+        <section class="download-container">    
+          <button id="download">チャットを始める</button>
+          <div id="download-progress" class="progress-bar hidden">
+            <div class="progress-fill"></div>
+          </div>
+          <p id="download-status" class="hidden">モデルをダウンロードしています...</p>
+        </section>
+        <section class="suggestions-container">
+          <h2 class="suggestions-title">例文をクリックして会話を始めてみましょう</h2>
+          <div class="suggestions">
+            <button class="suggestion-btn">年始挨拶のメールテンプレートを作ってください。</button>
+            <button class="suggestion-btn">知識蒸留について簡単に教えてください。</button>
+            <button class="suggestion-btn">これから大事な発表があります。私を励ましてください。</button>
+            <button class="suggestion-btn">２羽のツバメが主人公の温かな物語を書いてください。</button>
+          </div>
+        </section>
+        <section class="chat-container">
+          <div id="chat-box" class="chat-box"></div>
+          <div id="chat-stats" class="chat-stats hidden"></div>
+          <div class="chat-input-container">
+            <textarea id="user-input" placeholder="メッセージを入力してください。" rows="1"></textarea>
+            <div class="input-actions">
+              <button id="send" disabled>
+                <span class="button-content">
+                  <span class="button-text">送信</span>
+                  <span class="spinner hidden"></span>
+                </span>
+              </button>
+              <button id="reset-chat">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.3"/></svg>
+              </button>
+            </div>
+          </div>
+          <button id="info-button" class="icon-button" aria-label="利用上の注意事項">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"></circle>
+              <path d="M12 16v-4"></path>
+              <path d="M12 8h.01"></path>
+            </svg>
+          </button>
+        </section>
+      </main>
+
+      <div id="info-modal" class="modal hidden">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h3>利用上の注意事項</h3>
+            <button class="close-modal">×</button>
+          </div>
+          <div class="modal-body">
+            <div class="footer-notice">
+              <p class="notice-text">
+                本モデルは実験段階のプロトタイプであり、研究開発の目的でのみ提供されています。商用利用や、障害が重大な影響を及ぼす可能性のある環境（ミッションクリティカルな環境）での使用には適していません。 本モデルの使用は、利用者の自己責任で行われ、その性能や結果については何ら保証されません。 Sakana AIは、本モデルの使用によって生じた直接的または間接的な損失に対して、結果に関わらず、一切の責任を負いません。 利用者は、本モデルの使用に伴うリスクを十分に理解し、自身の判断で使用することが必要です。
+              </p>
+              <p class="notice-text">
+                本モデルはGoogleの「Gemma」モデルの派生物です。ご利用にあたっては、<a href="https://ai.google.dev/gemma/terms" target="_blank">Gemma Terms of Use</a>および<a href="https://ai.google.dev/gemma/prohibited_use_policy" target="_blank">Gemma Prohibited Use Policy</a>を遵守してください。モデルの出力は現状有姿で提供され、正確性や適法性などは保証されません。禁止行為が確認された場合、予告なく利用を制限または停止することがあります。
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <footer>
+        <div class="footer-main">
+          <p>&copy; 2025 <a href="https://sakana.ai" target="_blank">Sakana AI</a>. Powered by <a href="https://webllm.mlc.ai/" target="_blank">WebLLM</a>.</p>
+        </div>
+        <div class="footer-notice">
+          <p class="notice-text">
+            本モデルは実験段階のプロトタイプであり、研究開発の目的でのみ提供されています。商用利用や、障害が重大な影響を及ぼす可能性のある環境（ミッションクリティカルな環境）での使用には適していません。 本モデルの使用は、利用者の自己責任で行われ、その性能や結果については何ら保証されません。 Sakana AIは、本モデルの使用によって生じた直接的または間接的な損失に対して、結果に関わらず、一切の責任を負いません。 利用者は、本モデルの使用に伴うリスクを十分に理解し、自身の判断で使用することが必要です。
+          </p>
+          <p class="notice-text">
+            本モデルはGoogleの「Gemma」モデルの派生物です。ご利用にあたっては、<a href="https://ai.google.dev/gemma/terms" target="_blank">Gemma Terms of Use</a>および<a href="https://ai.google.dev/gemma/prohibited_use_policy" target="_blank">Gemma Prohibited Use Policy</a>を遵守してください。モデルの出力は現状有姿で提供され、正確性や適法性などは保証されません。禁止行為が確認された場合、予告なく利用を制限または停止することがあります。
+          </p>
+        </div>
+      </footer>
+    </div>
+    <script src="./index.js" type="module"></script>
+  </body>
+</html>
