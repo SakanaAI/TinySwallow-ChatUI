@@ -3,11 +3,14 @@
 このガイドでは、[小規模言語モデルTinySwallow](https://sakana.ai/taid-jp/)をiPhoneで動かす方法を説明します。
 
 ## セットアップ手順
+### Updates
+* **[2025.8.27]:** LLMFarmは通常のApp Storeからダウンロードできず、[TestFlight](https://apps.apple.com/jp/app/testflight/id899247664)を経由してダウンロードする必要があります。また、[Section 3.の6](#3-llmfarmでの設定)につきまして、「ChatML」でなく「Custom」と選択してください。
 
 ### 1. アプリのダウンロード
 
 まずは「LLMFarm」というアプリをApp Storeからダウンロードしてください。
 [LLMFarmをダウンロード](https://apps.apple.com/ru/app/llm-farm/id6461209867?l=en-GB&platform=iphone)
+
 
 ### 2. モデルファイルのダウンロード
 
