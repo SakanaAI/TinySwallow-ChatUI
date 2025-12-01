@@ -1,4 +1,4 @@
-import * as webllm from "https://esm.run/@mlc-ai/web-llm";
+import * as webllm from "https://esm.run/@mlc-ai/web-llm@0.2.48";
 
 console.log("WebLLM loaded successfully!");
 const messages = [
