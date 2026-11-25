@@ -199,7 +199,7 @@ function appendMessage(message) {
     gfm: true
   });
   const formattedMessage = marked.parse(message.content);
-  newMessage.innerHTML = formattedMessage;
+  newMessage.innerHTML = DOMPurify.sanitize(formattedMessage);
 
   container.appendChild(newMessage);
   chatBox.appendChild(container);
@@ -217,7 +217,7 @@ function updateLastMessage(content) {
     gfm: true
   });
   const formattedContent = marked.parse(content);
-  lastMessageDom.innerHTML = formattedContent;
+  lastMessageDom.innerHTML = DOMPurify.sanitize(formattedContent);
   const chatBox = document.getElementById("chat-box");
   chatBox.scrollTo({
     top: chatBox.scrollHeight,
